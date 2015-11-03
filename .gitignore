@@ -23,7 +23,10 @@ Thumbs.db
 [Dd]ebug*/
 *.lib
 *.sbr
+*.opensdf
+*.sdf
 obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+Pruebas/

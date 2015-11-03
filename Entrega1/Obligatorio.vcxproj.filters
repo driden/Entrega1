@@ -13,6 +13,12 @@
     <Filter Include="Implementacion">
       <UniqueIdentifier>{5f63c92d-1635-4d7e-a513-4bf82e999fe4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Implementacion\Lista">
+      <UniqueIdentifier>{db59c4a8-139a-42d7-9414-732628dc9ec7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementacion\Comparadores">
+      <UniqueIdentifier>{41361e15-874c-479d-b212-54002c6c4e2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CasoDePrueba.cpp">
@@ -24,6 +30,21 @@
     <ClCompile Include="Sistema.cpp">
       <Filter>Implementacion</Filter>
     </ClCompile>
+    <ClCompile Include="ListaEnlazada.cpp">
+      <Filter>Implementacion\Lista</Filter>
+    </ClCompile>
+    <ClCompile Include="ListaIteracion.cpp">
+      <Filter>Implementacion\Lista</Filter>
+    </ClCompile>
+    <ClCompile Include="NodoLista.cpp">
+      <Filter>Implementacion\Lista</Filter>
+    </ClCompile>
+    <ClCompile Include="ComparadorNat.cpp">
+      <Filter>Implementacion\Comparadores</Filter>
+    </ClCompile>
+    <ClCompile Include="ComparadorTuplaNatNat.cpp">
+      <Filter>Implementacion\Comparadores</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CasoDePrueba.h">
@@ -34,6 +55,24 @@
     </ClInclude>
     <ClInclude Include="Sistema.h">
       <Filter>Implementacion</Filter>
+    </ClInclude>
+    <ClInclude Include="Lista.h">
+      <Filter>Implementacion\Lista</Filter>
+    </ClInclude>
+    <ClInclude Include="ListaEnlazada.h">
+      <Filter>Implementacion\Lista</Filter>
+    </ClInclude>
+    <ClInclude Include="ListaIteracion.h">
+      <Filter>Implementacion\Lista</Filter>
+    </ClInclude>
+    <ClInclude Include="NodoLista.h">
+      <Filter>Implementacion\Lista</Filter>
+    </ClInclude>
+    <ClInclude Include="ComparadorNat.h">
+      <Filter>Implementacion\Comparadores</Filter>
+    </ClInclude>
+    <ClInclude Include="ComparadorTuplaNatNat.h">
+      <Filter>Implementacion\Comparadores</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
