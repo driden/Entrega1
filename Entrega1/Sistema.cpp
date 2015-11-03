@@ -3,6 +3,8 @@
 #include "ListaEnlazada.h"
 #include "ComparadorNat.h"
 #include "ComparadorTuplaNatNat.h"
+#include "SetAcotado.h"
+#include "ColaPrioridadAcotada.h"
 
 class ComparadorTuplaNatNat;
 
@@ -35,15 +37,13 @@ Tupla<TipoRetorno, Iterador<Tupla<nat, nat>>> Sistema::EnlacesCriticos(Iterador<
 	Puntero<Lista<Tupla<nat, nat>>> enlacesCriticos = new ListaEnlazada<Tupla<nat, nat>>(new ComparadorTuplaNatNat());
 	Puntero<Lista<Tupla<nat, nat>>> aux;
 	nat skip = 0; // numero de arista que voy a saltear o "eliminar"
-	Array<bool> c1 = Array<bool>(_visited.Largo, false);
-
+	
 	//itero en las aristas que saco
 	for (nat i = 0; i < aristas.Largo; i++)
 	{
 		aux = new ListaEnlazada<Tupla<nat, nat>>(new ComparadorTuplaNatNat());
 		CrearListaAristas(aristas, skip, aux);
-		Iterador<Tupla<nat, nat>> newIter = aux->ObtenerIterador();
-		Array<Tupla<nat, nat>> newAristas = ObtenerArrayAristas(newIter);
+		Iterador<Tupla<nat, nat>> newIter = aux->ObtenerIterador();		
 		
 		//creo iterador y va salteando de a una arista
 		//itero en todos los vertices sacando una arista
@@ -53,7 +53,7 @@ Tupla<TipoRetorno, Iterador<Tupla<nat, nat>>> Sistema::EnlacesCriticos(Iterador<
 			IniciarEstructuras(vertices.Largo); //pq "elimino" una
 			
 			
-			DepthFirstSearch(newAristas[j].ObtenerDato1(), newIter, _previous, _visited, vertices);
+			DepthFirstSearch(vertices[j], newIter, _previous, _visited, vertices);
 			bool visiteTodos = _visited[0];
 			//estuve en todos los vertices?
 			for (nat k = 1; k < _visited.Largo; k++)
@@ -208,7 +208,68 @@ nat Sistema::CantIteracionesTuplaNat(Iterador<Tupla<nat, nat>> it)
 // Operación 2
 Tupla<TipoRetorno, Iterador<Tupla<nat, nat>>> Sistema::AhorroEnlaces(Matriz<nat> & laboratorio)
 {
-	return Tupla<TipoRetorno, Iterador<Tupla<nat, nat>>>(NO_IMPLEMENTADA, NULL);
+
+	//pasar todas las aristas(sets de vertices) a una PQUEUE para usar Kruskal
+	Tupla<nat, nat> arista;
+	nat l = laboratorio.ObtenerLargo();
+	Puntero<ColaPrioridad<Tupla<nat, nat>>> pqueue = new ColaPrioridadAcotada<Tupla<nat, nat>>(l*l);
+	Array<Puntero<Set<nat>>> compConexa = Array<Puntero<Set<nat>>>(l);
+	for (nat m = 0; m < l; m++)
+		compConexa[m] = new SetAcotado<nat>(l, new ComparadorNat());
+	
+	Matriz<nat> arbol= Matriz<nat>(l,l);	
+
+	//recorro la matriz para obtener los sets con su prioridad
+	//son aristas no dirigidas, por lo tanto miro de la diagonal para la derecha
+	for (nat f = 0; f < laboratorio.Largo; f++) {
+		compConexa[f]->Insertar(f);
+		for (nat c = 0; c < laboratorio.Largo; c++)
+		{
+			arbol[f][c] = 0;
+			//si tiene arista
+			if (laboratorio[f][c])
+			{
+				arista = Tupla<nat, nat>(f, c);
+				pqueue->Insertar(arista, laboratorio[f][c]);
+			}				
+		}
+	}
+	//hasta aca el inicio de las estructuras usadas para Kruskal
+
+	bool fin = false;
+	while (!fin)
+	{
+		nat min_prioridad = pqueue->GetMinPrioridad();
+		Tupla<nat, nat> arista = pqueue->BorrarMin();
+		
+		nat posO = arista.ObtenerDato1();
+		nat posD = arista.ObtenerDato2();
+
+		if (posO != -1 && posD != -1 && posO != posD)
+		{
+			arbol[posO][posD] = min_prioridad;
+			arbol[posD][posO] = min_prioridad;
+			compConexa[posO] = compConexa[posO]->Union(compConexa[posD]);
+			compConexa[posD]->VaciarSet();
+		}
+		fin = pqueue->EstaVacia() || (compConexa[posO]->Tamanio() == l);
+	}
+	Array<Tupla<nat, nat>> res = Array<Tupla<nat, nat>>(l*l);
+	nat tope = 0;
+	for (nat x = 0; x < l; x++)
+		for (nat y = 0; y < l; y++)
+		{
+			if (arbol[x][y])
+			{
+				Tupla<nat, nat> t(x, y);
+				res[tope] = t;
+				tope++;
+			}
+		}
+	//copiar el array hasta el tope
+	Array<Tupla<nat, nat>> arrayTope = Array<Tupla<nat, nat>>(tope);
+	Array<Tupla<nat, nat>>::Copiar(res, 0, tope, arrayTope);
+	return Tupla<TipoRetorno, Iterador<Tupla<nat, nat>>>(OK, arrayTope.ObtenerIterador());
 }
 
 // Operación 3

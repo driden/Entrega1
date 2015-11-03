@@ -102,6 +102,10 @@
     <ClCompile Include="ListaIteracion.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NodoLista.cpp" />
+    <ClCompile Include="ColaPrioridadAcotada.cpp" />
+    <ClCompile Include="ComparadorInt.cpp" />
+    <ClCompile Include="NodoCP.cpp" />
+    <ClCompile Include="SetAcotado.cpp" />
     <ClCompile Include="Sistema.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +117,12 @@
     <ClInclude Include="ListaEnlazada.h" />
     <ClInclude Include="ListaIteracion.h" />
     <ClInclude Include="NodoLista.h" />
+    <ClInclude Include="ColaPrioridad.h" />
+    <ClInclude Include="ColaPrioridadAcotada.h" />
+    <ClInclude Include="ComparadorInt.h" />
+    <ClInclude Include="NodoCP.h" />
+    <ClInclude Include="Set.h" />
+    <ClInclude Include="SetAcotado.h" />
     <ClInclude Include="Sistema.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

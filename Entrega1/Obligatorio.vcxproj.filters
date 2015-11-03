@@ -19,6 +19,12 @@
     <Filter Include="Implementacion\Comparadores">
       <UniqueIdentifier>{41361e15-874c-479d-b212-54002c6c4e2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Implementacion\Set">
+      <UniqueIdentifier>{41d13071-06e5-49bf-a47a-92f2566e1560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Implementacion\PQueue">
+      <UniqueIdentifier>{91d2c6a9-90c7-42af-bf07-3d366e11c71d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CasoDePrueba.cpp">
@@ -44,6 +50,18 @@
     </ClCompile>
     <ClCompile Include="ComparadorTuplaNatNat.cpp">
       <Filter>Implementacion\Comparadores</Filter>
+    </ClCompile>
+    <ClCompile Include="ColaPrioridadAcotada.cpp">
+      <Filter>Implementacion\PQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="ComparadorInt.cpp">
+      <Filter>Implementacion\Comparadores</Filter>
+    </ClCompile>
+    <ClCompile Include="NodoCP.cpp">
+      <Filter>Implementacion\PQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="SetAcotado.cpp">
+      <Filter>Implementacion\Set</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +91,24 @@
     </ClInclude>
     <ClInclude Include="ComparadorTuplaNatNat.h">
       <Filter>Implementacion\Comparadores</Filter>
+    </ClInclude>
+    <ClInclude Include="ColaPrioridad.h">
+      <Filter>Implementacion\PQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="ColaPrioridadAcotada.h">
+      <Filter>Implementacion\PQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="ComparadorInt.h">
+      <Filter>Implementacion\Comparadores</Filter>
+    </ClInclude>
+    <ClInclude Include="NodoCP.h">
+      <Filter>Implementacion\PQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="Set.h">
+      <Filter>Implementacion\Set</Filter>
+    </ClInclude>
+    <ClInclude Include="SetAcotado.h">
+      <Filter>Implementacion\Set</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
