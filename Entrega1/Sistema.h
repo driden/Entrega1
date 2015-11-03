@@ -18,10 +18,15 @@ public:
 
 	// Operación 2
 	Tupla<TipoRetorno, Iterador<Tupla<nat, nat>>> AhorroEnlaces(Matriz<nat> & laboratorio) override;
-
+	void CargarArrayVertices(Iterador<Cadena>& tareas, Array<Cadena> vertices);
+	void CargarArrayAristas(Iterador<Tupla<Cadena, Cadena>>& precedencias, Array<Tupla<Cadena, Cadena>> aristas);
+	void CargarArrayGradoVerticesEntrantes(Matriz<nat> matrizAdy, Array<nat> gradoEntranteVertices);
+	nat GetIndiceVerticeGrado0(Array<nat>& gradoEntranteVertices,Array<bool> &eliminado);
 	// Operación 3
 	Tupla<TipoRetorno, Iterador<Cadena>> GerenteProyecto(Iterador<Cadena> tareas, Iterador<Tupla<Cadena, Cadena>> precedencias) override;
-	
+	nat GetCantidadAristas(Iterador<Tupla<Cadena, Cadena>> it);
+	nat GetCantidadVertices(Iterador<Cadena> tareas);
+	nat PosicionVerticeEnArray(Cadena tarea, Array<Cadena> tareas);
 	void IniciarEstructuras(nat largo);
 	Array<Tupla<nat, nat>> ObtenerArrayAristas(Iterador<Tupla<nat, nat>> it);
 	Array<nat> ObtenerArrayVertices(Iterador<nat> it);

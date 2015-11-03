@@ -272,8 +272,150 @@ Tupla<TipoRetorno, Iterador<Tupla<nat, nat>>> Sistema::AhorroEnlaces(Matriz<nat>
 	return Tupla<TipoRetorno, Iterador<Tupla<nat, nat>>>(OK, arrayTope.ObtenerIterador());
 }
 
+
+void Sistema::CargarArrayVertices(Iterador<Cadena>& tareas, Array<Cadena> vertices)
+{
+	nat i = 0;
+	while (tareas.HayElemento())
+	{
+		vertices[i] = tareas.ElementoActual();
+		tareas.Avanzar();
+		i++;
+	}
+}
+
+void Sistema::CargarArrayAristas(Iterador<Tupla<Cadena, Cadena>>& precedencias, Array<Tupla<Cadena, Cadena>> aristas)
+{
+	nat i = 0;
+	precedencias.Reiniciar();
+	while (precedencias.HayElemento())
+	{
+		aristas[i] = precedencias.ElementoActual();
+		i++;
+		precedencias.Avanzar();
+	}
+}
+
+void Sistema::CargarArrayGradoVerticesEntrantes(Matriz<nat> matrizAdy, Array<nat> gradoEntranteVertices)
+{
+	//recorro las columnas y por cada una sumo los 1 en las filas
+	//busco la posicion en el array y lo updateo
+	for (nat c = 0; c < matrizAdy.Largo; c++)
+	{
+		nat acumulador = 0;
+		for (nat f = 0;f < matrizAdy.Largo; f++)
+		{
+			if (matrizAdy[f][c])
+				acumulador++;
+		}
+		gradoEntranteVertices[c] = acumulador;
+		
+	}	
+}
+
+nat Sistema::GetIndiceVerticeGrado0(Array<nat>& gradoEntranteVertices, Array<bool> &eliminado)
+{
+	nat indiceCero = 0;
+	for (nat i = 0; i < gradoEntranteVertices.Largo; i++)
+		if ((gradoEntranteVertices[i] == 0) && !eliminado[i])
+		{
+			indiceCero = i;
+			break;
+		}			
+	return indiceCero;
+}
+
 // Operación 3
 Tupla<TipoRetorno, Iterador<Cadena>> Sistema::GerenteProyecto(Iterador<Cadena> tareas, Iterador<Tupla<Cadena, Cadena>> precedencias)
 {
-	return Tupla<TipoRetorno, Iterador<Cadena>>(NO_IMPLEMENTADA, NULL);
+	nat largoV = GetCantidadVertices(tareas);
+	nat largoA = GetCantidadAristas(precedencias);
+	
+	Array<Cadena> vertices = Array<Cadena>(largoV);
+	CargarArrayVertices(tareas, vertices);
+	
+	
+	Array<Tupla<Cadena, Cadena>> aristas = Array<Tupla<Cadena, Cadena>>(largoA);
+	CargarArrayAristas(precedencias, aristas);
+
+	Array<nat> gradoEntranteVertices = Array<nat>(largoV, 0);
+	Array<bool> eliminado = Array<bool>(largoV, false);
+	Array<nat> ordinal = Array<nat>(largoV, 0);	
+
+	Matriz<nat> matrizAdy = Matriz<nat>(largoV);
+	for (nat f = 0; f < largoV; f++)
+		for (nat c = 0; c < largoV; c++)
+			matrizAdy[f][c] = 0;
+
+	//Cargo la matriz con los valores
+	for (nat i = 0; i < largoA; i++)
+	{
+		nat x = PosicionVerticeEnArray(aristas[i].ObtenerDato1(), vertices);
+		nat y = PosicionVerticeEnArray(aristas[i].ObtenerDato2(), vertices);
+		matrizAdy[x][y] = 1;
+	}
+	CargarArrayGradoVerticesEntrantes(matrizAdy, gradoEntranteVertices);
+	for (nat cont = 0; cont < largoV; cont++)
+	{
+		
+		nat indice0 = GetIndiceVerticeGrado0(gradoEntranteVertices,eliminado);
+		//asigno posicion en el resultado
+		ordinal[indice0] = cont;
+		eliminado[indice0] = true;
+		//tengo que borrar aristas y bajarles el grado
+		for (nat w = 0; w < largoV; w++)
+		{
+			if (matrizAdy[indice0][w] == 1)
+			{
+				gradoEntranteVertices[w]--;
+			}
+		}
+	}
+	Array<Cadena> tareasOrdenadas = Array<Cadena>(largoV);
+	for (nat i = 0; i < ordinal.Largo; i++)
+	{
+		tareasOrdenadas[i] = vertices[ordinal[i]];
+	}
+
+
+	return Tupla<TipoRetorno, Iterador<Cadena>>(OK, tareasOrdenadas.ObtenerIterador());
+}
+nat Sistema::GetCantidadAristas(Iterador<Tupla<Cadena, Cadena>> it)
+{
+	nat cant = 0;
+	it.Reiniciar();
+	while (it.HayElemento())
+	{
+		cant++;
+		it.Avanzar();
+	}
+	it.Reiniciar();
+	return cant;
+}
+
+nat Sistema::GetCantidadVertices(Iterador<Cadena> tareas)
+{
+	nat cantTareas = 0;
+	tareas.Reiniciar();
+	while (tareas.HayElemento())
+	{
+		cantTareas++;
+		tareas.Avanzar();
+	}
+	tareas.Reiniciar();
+	return cantTareas;
+}
+
+nat Sistema::PosicionVerticeEnArray(Cadena tarea, Array<Cadena> tareas)
+{
+	nat index = 0;
+	for (nat i = 0; i < tareas.Largo; i++)
+	{
+		if (tareas[i] == tarea)
+		{
+			index = i;
+			break;
+		}
+	}
+	return index;
 }
